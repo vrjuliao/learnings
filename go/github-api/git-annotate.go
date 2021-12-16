@@ -27,5 +27,4 @@ func git_log() {
 	for walker.Next(oid) == nil {
 
 	}
-	return false
 }
