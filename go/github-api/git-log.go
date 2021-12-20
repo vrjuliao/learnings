@@ -3,8 +3,11 @@ package main
 import "github.com/libgit2/git2go/v33"
 import "fmt"
 
+
 func main () {
-	repo, _ := git.OpenRepository("/home/vrjuliao/cyral/devops/api-server/")
+	//<path until repo root directory>
+	path := "/cyral/devops/api-server"
+	repo, _ := git.OpenRepository(path)
 	git_log(repo)
 }
 
