@@ -6,7 +6,7 @@ import "fmt"
 
 func main () {
 	//<path until repo root directory>
-	path := "/cyral/devops/api-server"
+	path := "/path/to/root/directory/of/the/repo"
 	repo, _ := git.OpenRepository(path)
 	git_log(repo)
 }
