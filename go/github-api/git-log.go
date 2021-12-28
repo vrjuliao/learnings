@@ -1,12 +1,15 @@
 package main
 
-import "github.com/libgit2/git2go/v33"
-import "fmt"
+import (
+	"fmt"
+	"os"
 
+	git "github.com/libgit2/git2go/v33"
+)
 
-func main () {
+func main() {
 	//<path until repo root directory>
-	path := "/path/to/root/directory/of/the/repo"
+	path := os.Args[1]
 	repo, _ := git.OpenRepository(path)
 	git_log(repo)
 }
@@ -14,16 +17,16 @@ func main () {
 func git_log(repo *git.Repository) {
 	// git default object
 	oid := new(git.Oid)
-	
+
 	// options of `git --describe` command
-	describeOpt,_ := git.DefaultDescribeOptions()
+	describeOpt, _ := git.DefaultDescribeOptions()
 	describeOpt.Strategy = git.DescribeTags
-	describeFmt, _:= git.DefaultDescribeFormatOptions()
-	
+	describeFmt, _ := git.DefaultDescribeFormatOptions()
+
 	// initialize commit iterator
 	walker, _ := repo.Walk()
 	walker.PushHead()
-	
+
 	// getting next commit from HEAD
 	var nxt = walker.Next(oid)
 	if nxt != nil {
@@ -31,7 +34,7 @@ func git_log(repo *git.Repository) {
 	}
 	var count = 0
 
-	for nxt  == nil {
+	for nxt == nil {
 		count = count + 1
 		commit, _ := repo.LookupCommit(oid)
 		if count > 4 {
@@ -40,9 +43,9 @@ func git_log(repo *git.Repository) {
 		// get commit Signature
 		author := commit.Author()
 		fmt.Println("Author:", author.Name)
-		
+
 		fmt.Println("Message:", commit.Message())
-		
+
 		// get commit tag
 		describeResult, err := commit.Describe(&describeOpt)
 		if err != nil {
