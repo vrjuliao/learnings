@@ -22,6 +22,7 @@ func git_log(repo *git.Repository) {
 	describeOpt, _ := git.DefaultDescribeOptions()
 	describeOpt.Strategy = git.DescribeTags
 	describeFmt, _ := git.DefaultDescribeFormatOptions()
+	describeFmt.AbbreviatedSize = 0
 
 	// initialize commit iterator
 	walker, _ := repo.Walk()
