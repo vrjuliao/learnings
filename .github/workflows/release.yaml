@@ -1,0 +1,18 @@
+on: [push]
+
+jobs:
+  generate-release:
+    runs-on: ubuntu-latest
+    name: Create release from a given tag
+    container:
+      image: docker://vrjuliao/changelog-autogen:0.1
+    
+    steps:
+      # To use this repository's private action,
+      # you must check out the repository
+      - name: Checkout
+        uses: actions/checkout@v2
+      
+      - name: listing
+        id: list
+        run: ls
