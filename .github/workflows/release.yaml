@@ -12,12 +12,13 @@ jobs:
       # you must check out the repository
       - uses: actions/checkout@v2
       - run: |
-          date > generated.txt
           git config user.name github-actions
           git config user.email github-actions@github.com
           git config --global url.git@github.com:.insteadOf https://github.com/
 
       - name: Add SSH key
+        env:
+          cred: ${{ secrets.SSH_KEY }}
         run: |
             mkdir -p /root/.ssh
             cat <<EOF >/root/.ssh/config
@@ -25,8 +26,8 @@ jobs:
             # you're SSH-ing into
             ssh-keyscan github.com >> /home/runner/.ssh/known_hosts
             # DOKKU_SSH_KEY is the name of the repository secret
-            echo "${{ secrets.SSH_KEY }}"
-            echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/id_rsa
+            echo $cred
+            echo $cred > /home/runner/.ssh/id_rsa
             chmod 600 /home/runner/.ssh/id_rsa
       
       - name: listing
