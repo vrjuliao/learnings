@@ -20,19 +20,18 @@ jobs:
         env:
           cred: ${{ secrets.SSH_KEY }}
         run: |
-            mkdir -p /root/.ssh
-            cat <<EOF >/root/.ssh/config
-            # Replace example.com with the hostname of the machine
-            # you're SSH-ing into
-            ssh-keyscan github.com >> /home/runner/.ssh/known_hosts
-            # DOKKU_SSH_KEY is the name of the repository secret
-            echo $cred
-            echo $cred > /home/runner/.ssh/id_rsa
-            chmod 600 /home/runner/.ssh/id_rsa
+              mkdir -p /root/.ssh
+              echo $cred > /home/runner/.ssh/id_rsa
+              chmod 600 /home/runner/.ssh/id_rsa
+              cat <<EOF >/root/.ssh/config
+              Hostname github.com
+              IdentityFile /root/.ssh/id_rsa
+              StrictHostKeyChecking no
+              EOF
       
+      - name: cloning private-repo
+        run: git clone git@github.com:cyralinc/devops.git /tmp/devops
+
       - name: listing
         id: list
-        run: ls /changelog-autogen
-
-      - name: cloning private-repo
-        run: git clone git@github.com:cyralinc/devops.git
+        run: ls /tmp/devops
