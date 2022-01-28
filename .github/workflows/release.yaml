@@ -16,6 +16,19 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git config --global url.git@github.com:.insteadOf https://github.com/
+
+      - name: Add SSH key
+        env:
+            SSH_AUTH_SOCK: /tmp/ssh_agent.sock
+        run: |
+            mkdir -p /root/.ssh
+            cat <<EOF >/root/.ssh/config
+            # Replace example.com with the hostname of the machine
+            # you're SSH-ing into
+            ssh-keyscan github.com >> /home/runner/.ssh/known_hosts
+            # DOKKU_SSH_KEY is the name of the repository secret
+            echo "${{ secrets.SSH_KEY }}" > /home/runner/.ssh/id_rsa
+            chmod 600 /home/runner/.ssh/id_rsa
       
       - name: listing
         id: list
