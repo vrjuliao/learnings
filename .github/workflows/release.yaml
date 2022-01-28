@@ -21,12 +21,12 @@ jobs:
           cred: ${{ secrets.SSH_KEY }}
         run: |
               mkdir -p /root/.ssh
-              echo $cred > /root/.ssh/id_rsa
+              echo $cred > /root/.ssh/id_ed25519
               echo $cred
-              chmod 600 /root/.ssh/id_rsa
+              chmod 600 /root/.ssh/id_ed25519
               cat <<EOF >/root/.ssh/config
               Hostname github.com
-              IdentityFile /root/.ssh/id_rsa
+              IdentityFile /root/.ssh/id_ed25519
               StrictHostKeyChecking no
               EOF
       
