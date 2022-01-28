@@ -15,4 +15,4 @@ jobs:
       
       - name: listing
         id: list
-        run: ls
+        run: ls /changelog-autogen
