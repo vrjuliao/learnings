@@ -19,23 +19,6 @@ jobs:
           git config user.email github-actions@github.com
           git config --global url.git@github.com:.insteadOf https://github.com/
 
-      - name: Create tag
-        id: create_tag
-        run: |
-          if [[ "${{ github.event_name }}" == "schedule" ]]; then
-            tag=v$(date +%Y%m%d.%H%M%S)
-          else
-            tag=$(basename "${{ github.ref }}")
-          fi
-          echo "::set-output name=tag::$tag"
-
-      - name: Show tag
-        id: show_tag
-        run: |
-             echo $tag_name
-        env:
-          tag_name: ${{ steps.create_tag.outputs.tag }}
-
       - name: Add SSH key
         env:
           cred: ${{ secrets.SSH_KEY }}
@@ -49,10 +32,41 @@ jobs:
               IdentityFile /root/.ssh/id_ed25519
               StrictHostKeyChecking no
               EOF
-      
-      - name: cloning private-repo
-        run: git clone git@github.com:cyralinc/devops.git /tmp/devops
 
-      - name: listing
-        id: list
-        run: ls /tmp/devops
+      - name: Create tag
+        id: create_tag
+        run: |
+          tag=$(basename "${{ github.ref }}")
+          echo "::set-output name=tag::$tag"
+
+      - name: Show tag
+        id: show_tag
+        run: |
+            echo $tag_name
+        env:
+          tag_name: ${{ steps.create_tag.outputs.tag }}
+
+      - name: Generate changelog
+        id: changelog_generation
+        run: /changelog-autogen/generator -tag=$tag_name `pwd`
+        env:
+          tag_name: ${{ steps.create_tag.outputs.tag }}
+
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ steps.create_tag.outputs.tag }}
+          release_name: Release ${{ steps.create_tag.outputs.tag }}
+          body_path: ./CHANGELOG.md
+          draft: true
+          prerelease: false
+
+      - name: Publish release
+        uses: StuYarrow/publish-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          id: ${{ steps.create_release.outputs.id }}
