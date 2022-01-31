@@ -1,4 +1,6 @@
-on: [push]
+on:
+  push:
+    tags: ['*']
 
 jobs:
   generate-release:
@@ -15,6 +17,18 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git config --global url.git@github.com:.insteadOf https://github.com/
+
+      - name: Create tag
+        id: create_tag
+        run: |
+             tag=$(basename "${{ github.ref }}")
+             echo "::set-output name=tag::$tag"
+
+      - name: Show tag
+        id: show_tag
+        run: echo $tag
+        with:
+          tag_name: ${{ steps.create_tag.outputs.tag }}
 
       - name: Add SSH key
         env:
