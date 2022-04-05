@@ -1,8 +1,9 @@
+# Local complete build
+
 ## Command:
 
 ```sh
-utils/build-script --foundation --libdispatch --skip-test-linux --install-foundation --install-libdispatch --skip-test-foundation=1 --skip-build-benchmarks --swiftsyntax --install-swiftsyntax --swiftpm --install-swiftpm --llbuild --install-swift --xctest --install-xctest
---release --no-asserts --sccache
+utils/build-script --foundation --libdispatch --skip-test-linux --install-foundation --install-libdispatch --skip-test-foundation=1 --skip-build-benchmarks --swiftsyntax --install-swiftsyntax --swiftpm --install-swiftpm --llbuild --install-swift --xctest --install-xctest --sccache
 ```
 
 Not tested, but maybe the `--sccache` can help to speed up compilation.
@@ -14,19 +15,31 @@ Not tested, but maybe the `--sccache` can help to speed up compilation.
   export SWIFT="/home/vrjuliao/swift-project/build/Ninja-DebugAssert/toolchain-linux-x86_64/usr/bin"
   ```
 
+## Build swift-syntax separately
+```sh
+/home/vrjuliao/swift-project/swift-syntax/build-script.py --build-dir /home/vrjuliao/swift-project/build/Ninja-DebugAssert/unified-swiftpm-build-linux-x86_64 --multiroot-data-file /home/vrjuliao/swift-project/swift/utils/build_swift/resources/SwiftPM-Unified-Build.xcworkspace --toolchain /home/vrjuliao/swift-project/build/Ninja-DebugAssert/toolchain-linux-x86_64/usr --filecheck-exec /home/vrjuliao/swift-project/build/Ninja-DebugAssert/llvm-linux-x86_64/bin/FileCheck
+```
+
 ## Build swift syntax parser
 ```sh
 utils/build-tooling-libs --release --no-assertions --build-dir /tmp/tooling-libs-build --install-prefix /home/vrjuliao/swift-project/build/Ninja-DebugAssert/toolchain-linux-x86_64/usr
 ```
 
-## Compiling Code with swift syntax
+## Compiling examples Code with swift syntax
+1. AddOneToIntegerLiterals.swift
 ```sh
 $SWIFT/swiftc \
 -L /home/vrjuliao/swift-project/build/Ninja-DebugAssert/unified-swiftpm-build-linux-x86_64/debug/ \
 -I /home/vrjuliao/swift-project/build/Ninja-DebugAssert/unified-swiftpm-build-linux-x86_64/debug/ \
--lSwiftSyntax -lSwiftSyntaxParser \
--L /home/vrjuliao/workfolder/swifit-project/swift-5.6-DEVELOPMENT-SNAPSHOT-2022-03-02-a-ubuntu20.04/usr/lib/swift/linux/ \
--I /home/vrjuliao/workfolder/swifit-project/swift-5.6-DEVELOPMENT-SNAPSHOT-2022-03-02-a-ubuntu20.04/usr/lib/swift/linux \
--l_InternalSwiftSyntaxParser \
+-lSwiftSyntax -lSwiftSyntaxParser -l_InternalSwiftSyntaxParser \
 AddOneToIntegerLiterals.swift
+```
+
+2. CodeGenerationUsingSwiftSyntaxBuilder.swift
+```sh
+$SWIFT/swiftc \
+-L /home/vrjuliao/swift-project/build/Ninja-DebugAssert/unified-swiftpm-build-linux-x86_64/debug/ \
+-I /home/vrjuliao/swift-project/build/Ninja-DebugAssert/unified-swiftpm-build-linux-x86_64/debug/ \
+-lSwiftSyntaxBuilder \
+CodeGenerationUsingSwiftSyntaxBuilder.swift
 ```

@@ -1,4 +1,4 @@
-import SwiftSyntax
+import SwiftSyntaxBuilder
 
 /// This example will print the following example:
 /// 
