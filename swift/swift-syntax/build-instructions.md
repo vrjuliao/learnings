@@ -15,6 +15,11 @@ Not tested, but maybe the `--sccache` can help to speed up compilation.
   export SWIFT="/home/vrjuliao/swift-project/build/Ninja-DebugAssert/toolchain-linux-x86_64/usr/bin"
   ```
 
+- Add some standard flags for SwiftSyntax libraries
+  ```bash
+  export SWIFT_FLAGS="-L /home/vrjuliao/swift-project/build/Ninja-DebugAssert/unified-swiftpm-build-linux-x86_64/debug/ -I /home/vrjuliao/swift-project/build/Ninja-DebugAssert/unified-swiftpm-build-linux-x86_64/debug/"
+  ```
+
 ## Build swift-syntax separately
 ```sh
 /home/vrjuliao/swift-project/swift-syntax/build-script.py --build-dir /home/vrjuliao/swift-project/build/Ninja-DebugAssert/unified-swiftpm-build-linux-x86_64 --multiroot-data-file /home/vrjuliao/swift-project/swift/utils/build_swift/resources/SwiftPM-Unified-Build.xcworkspace --toolchain /home/vrjuliao/swift-project/build/Ninja-DebugAssert/toolchain-linux-x86_64/usr --filecheck-exec /home/vrjuliao/swift-project/build/Ninja-DebugAssert/llvm-linux-x86_64/bin/FileCheck
