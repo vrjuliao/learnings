@@ -13,4 +13,5 @@
   ``` 
   é através do aninhamento: `PatternBinding.accessor: CodeBlock -> CodeBlockItem.item -> MemberAccessExpr`?
   - Se sim, então o problem acima é pertinente.
-  - Se não, então qual a maneira correta de gerar o código demostrado? Acredito que não haja outra opção. E de acordo com os nomes dos métodos e structs, um `CodeBlock` não me parece ser a opção correta para criar um `Accessor`
+  - Se não, então qual a maneira correta de gerar o código demostrado? Acredito que não haja outra opção. E de acordo com os nomes dos métodos e structs, um `CodeBlock` não me parece ser a opção correta para criar um `Accessor`.
+  - Na realidade, essa expressão é um tipo de inicialização, então há necessidade de readequar os tipos de inicialização, e adicionar esse tipo ao invés apenas da sintaxe que utiliza o simbolo de atribuição `=`.
