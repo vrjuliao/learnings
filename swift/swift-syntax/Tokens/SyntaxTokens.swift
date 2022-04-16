@@ -19,17 +19,15 @@ func lowercase_first_word(_ name: String) -> String {
     return name[..<idx].lowercased() + name[idx...]
 }
 
-
 class Token {
-
-    private var name: String
-    private var kind: String
-    private var unprefixedKind: String
-    private var serializationCode: Int
-    private var text: String?
-    private var isKeyword: Bool
-    private var requiresLeadingSpace: Bool
-    private var requiresTrailingSpace: Bool
+    public var name: String
+    public var kind: String
+    public var unprefixedKind: String
+    public var serializationCode: Int
+    public var text: String?
+    public var isKeyword: Bool
+    public var requiresLeadingSpace: Bool
+    public var requiresTrailingSpace: Bool
 
     init(name: String, kind: String, text: String?=nil,
         serializationCode: Int, unprefixedKind: String? = nil, isKeyword: Bool = false,
@@ -37,9 +35,9 @@ class Token {
         self.name = name
         self.kind = kind
         if unprefixedKind != nil {
-            self.unprefixedKind = kind
-        } else {
             self.unprefixedKind = unprefixedKind!
+        } else {
+            self.unprefixedKind = kind
         }
 
         self.serializationCode = serializationCode
